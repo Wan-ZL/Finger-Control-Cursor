@@ -36,11 +36,11 @@ while True:
                 # fingure action: 4,8,12 are needed
                 pos_set = []
                 finger_set = [4, 8, 12] # 4 and 8 for twist, 12 for movement
-                for fing_id in finger_set:
-                    f_xPos = int(one_hand_LM[fing_id].x * imgWidth)
-                    f_yPos = int(one_hand_LM[fing_id].y * imgHight)
+                for finger_id in finger_set:
+                    f_xPos = int(one_hand_LM[finger_id].x * imgWidth)
+                    f_yPos = int(one_hand_LM[finger_id].y * imgHight)
                     pos_set.append((f_xPos, f_yPos))
-                    # cv2.putText(img_flip, str(fing_id), (f_xPos + 20, f_yPos - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 0, 255), 2)
+                    # cv2.putText(img_flip, str(finger_id), (f_xPos + 20, f_yPos - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 0, 255), 2)
 
                 fire_dis = 25
                 x_pos_adjust = -600
