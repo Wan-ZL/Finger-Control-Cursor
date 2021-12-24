@@ -15,3 +15,6 @@ Need to make the cursor movement smooth. In current version, the cursor vibrates
 Need to make cursor follows index finger rather than middle finger (I think it would make better user experience). I didn't simplely make the cursor follow index finger because when the cursor will move when twisting, this makes cursor not press down accurately. Need to think about how to predict the behavior of user so the coursor won't move when press.
 
 Need to consider 3D space distance between thumb and index finger when making judgement of twist action. The current code only consider two dimention (x and y) because I don't know how to convert the z value into real world distance (the row data is decimal number). Need to fix this issue or the cursor will press when two fingers not twist but overlapped in 2D dimension (in camera's view)
+
+# Demo
+[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://github.com/Wan-ZL/finger-control-cursor/blob/main/screen%20recording.mp4)
