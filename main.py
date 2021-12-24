@@ -14,6 +14,14 @@ pTime = 0
 cTime = 0
 last_x = 0
 last_y = 0
+current_x = 0
+current_y = 0
+smooth_val = 3
+fire_dis = 30
+x_pos_adjust = -600
+y_pos_adjust = -600
+x_rate_adjust = 2.5
+y_rate_adjust = 2.5
 
 while True:
     ret, img = cap.read()
@@ -30,63 +38,43 @@ while True:
                     xPos = int(p_lm.x * imgWidth)
                     yPos = int(p_lm.y * imgHight)
                     zPos = 0 - p_lm.z
-                    # print(p_id, xPos, yPos, zPos)
-                    cv2.putText(img_flip, str(p_id), (xPos,yPos), cv2.FONT_HERSHEY_SIMPLEX, 10*zPos, (0, 0, 255), 2)
+                    cv2.putText(img_flip, str(p_id), (xPos, yPos), cv2.FONT_HERSHEY_SIMPLEX, 10 * zPos, (0, 0, 255), 2)
 
                 # fingure action: 4,8,12 are needed
                 pos_set = []
-                finger_set = [4, 8, 12] # 4 and 8 for twist, 12 for movement
+                finger_set = [4, 8, 12]  # 4 and 8 for twist, 12 for movement
                 for finger_id in finger_set:
                     f_xPos = int(one_hand_LM[finger_id].x * imgWidth)
                     f_yPos = int(one_hand_LM[finger_id].y * imgHight)
                     pos_set.append((f_xPos, f_yPos))
-                    # cv2.putText(img_flip, str(finger_id), (f_xPos + 20, f_yPos - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 0, 255), 2)
 
-                fire_dis = 25
-                x_pos_adjust = -600
-                y_pos_adjust = -600
-                x_rate_adjust = 2.5
-                y_rate_adjust = 2.5
-
-                move_finger_id = 2
-                # print(pos_set)
-                # print(abs(pos_set[0][0]-pos_set[1][0]))
-                # print(pos_set[0][0] - last_x, pos_set[0][1] - last_y)
-                # if abs(pos_set[0][0] - last_x) < 5 and abs(pos_set[0][1] - last_y) < 5:   # if thumb finger doesn't move
                 direct_distance = math.sqrt((pos_set[0][0] - pos_set[1][0]) ** 2 + (pos_set[0][1] - pos_set[1][1]) ** 2)
-                # if pos_set[0][0] - last_x < 10 and pos_set[0][1] - last_y < 10:
+
                 if direct_distance < fire_dis:  # if Twist figuers
                     print("True")
                     mouse.press(Button.left)
                 else:
+                    print("False")
                     mouse.release(Button.left)
 
                 # else:
-                mouse.position = (pos_set[2][0] * x_rate_adjust + x_pos_adjust, pos_set[2][1] * y_rate_adjust + y_pos_adjust)
+                cursorLoc_x = pos_set[2][0] * x_rate_adjust + x_pos_adjust
+                cursorLoc_y = pos_set[2][1] * y_rate_adjust + y_pos_adjust
 
-                #     # print("True")
-                #     mos_pos_x, mos_pos_y = mouse.position
-                #     # print('The current pointer position is {0}'.format(mouse.position))
-                #
-                #     x_change = pos_set[0][0]-last_x
-                #     y_change = pos_set[0][1]-last_y
-                #     # print(x_change, y_change)
-                #      # = mouse.position[1]
-                #     mouse.position = (mos_pos_x + x_change, mos_pos_y+y_change)
-                # else:
-                #     print("False")
+                # make cursor move smoothly
+                current_x = last_x + (cursorLoc_x - last_x) / smooth_val
+                current_y = last_y + (cursorLoc_y - last_y) / smooth_val
 
-                last_x = pos_set[0][0]
-                last_y = pos_set[0][1]
-                # print(one_hand_LM[4])
-                # xPos = int(one_hand_LM[4].x * imgWidth)
-                # yPos = int(one_hand_LM[4].y * imgHight)
-                # cv2.putText(img_flip, "4", (xPos+20,yPos-20), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (150, 0, 255), 2)
+                # set cursor location
+                mouse.position = (current_x, current_y)
+
+                last_x = current_x
+                last_y = current_y
 
         cTime = time.time()
-        fps = 1/(cTime-pTime)
+        fps = 1 / (cTime - pTime)
         pTime = cTime
-        cv2.putText(img_flip, f"FPS: {int(fps)}", (30,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.putText(img_flip, f"FPS: {int(fps)}", (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
         cv2.imshow('img', img_flip)
 
