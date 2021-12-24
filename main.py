@@ -17,7 +17,9 @@ last_y = 0
 current_x = 0
 current_y = 0
 smooth_val = 3
-fire_dis = 30
+press_dis = 30
+release_dis = 60 # this value designed for avoiding sudden release
+exe_dis = press_dis
 x_pos_adjust = -600
 y_pos_adjust = -600
 x_rate_adjust = 2.5
@@ -50,12 +52,16 @@ while True:
 
                 direct_distance = math.sqrt((pos_set[0][0] - pos_set[1][0]) ** 2 + (pos_set[0][1] - pos_set[1][1]) ** 2)
 
-                if direct_distance < fire_dis:  # if Twist figuers
-                    print("True")
+                if direct_distance < exe_dis:  # if Twist figuers
+                    # print("True")
                     mouse.press(Button.left)
+                    cv2.putText(img_flip, "press", (30, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+                    exe_dis = release_dis
                 else:
-                    print("False")
+                    # print("False")
                     mouse.release(Button.left)
+                    cv2.putText(img_flip, "release", (30, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+                    exe_dis = press_dis
 
                 # else:
                 cursorLoc_x = pos_set[2][0] * x_rate_adjust + x_pos_adjust
