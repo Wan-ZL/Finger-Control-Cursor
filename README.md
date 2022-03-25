@@ -1,4 +1,4 @@
-# Use finger control the cursor of computer
+# Use finger control the cursor of computer without mouse
 This software allows users to control the cursor with finger movement. The cursor follows the position of the middle finger. When fingers (thumb and index finger) are pinched together, the cursor press. When they separate, the cursor is release. Adjust parameters to fit your computer.
  
  
